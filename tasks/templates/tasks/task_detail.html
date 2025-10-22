@@ -1,0 +1,27 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+<div class="card shadow-sm p-4">
+    <h3 class="mb-3"><i class="bi bi-card-text"></i> Task Details</h3>
+    <p><strong>Title:</strong> {{ task.title }}</p>
+    <p><strong>Description:</strong> {{ task.description|default:"No description" }}</p>
+    <p><strong>Priority:</strong>
+        {% if task.priority == 3 %}
+            <span class="badge bg-danger">High</span>
+        {% elif task.priority == 2 %}
+            <span class="badge bg-warning text-dark">Medium</span>
+        {% else %}
+            <span class="badge bg-success">Low</span>
+        {% endif %}
+    </p>
+    <p><strong>Due Date:</strong> {{ task.due_date|default:"No due date" }}</p>
+    <p><strong>Status:</strong> {% if task.completed %}✅ Completed{% else %}⏳ In Progress{% endif %}</p>
+    <div class="mt-3">
+        <a href="{% url 'task_update' task.pk %}" class="btn btn-primary"><i class="bi bi-pencil"></i> Edit</a>
+        <a href="{% url 'task_delete' task.pk %}" class="btn btn-danger"><i class="bi bi-trash"></i> Delete</a>
+        <a href="{% url 'task_list' %}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+    </div>
+</div>
+{% endblock %}
+
+

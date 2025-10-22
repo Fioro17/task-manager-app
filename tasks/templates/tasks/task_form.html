@@ -1,0 +1,88 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+<h2 class="mb-4">{% if form.instance.pk %}Edit{% else %}Create{% endif %} Task</h2>
+
+<form method="post" class="card p-4 shadow-sm">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <!-- Title -->
+    <div class="mb-3">
+        {{ form.title.label_tag }}
+        {{ form.title }}
+        {% if form.title.errors %}
+          <div class="text-danger small">{{ form.title.errors|join:", " }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Description -->
+    <div class="mb-3">
+        {{ form.description.label_tag }}
+        {{ form.description }}
+        {% if form.description.errors %}
+          <div class="text-danger small">{{ form.description.errors|join:", " }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Priority - Radio Buttons -->
+    <div class="mb-4">
+        <label class="form-label fw-bold">Priority</label>
+        <div class="d-flex gap-3">
+            {% for radio in form.priority %}
+              <div class="form-check">
+                {{ radio.tag }}
+                <label class="form-check-label">{{ radio.choice_label }}</label>
+              </div>
+            {% endfor %}
+        </div>
+        {% if form.priority.errors %}
+          <div class="text-danger small">{{ form.priority.errors|join:", " }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Due Date - Calendar Picker -->
+    <div class="mb-4">
+        {{ form.due_date.label_tag }}
+        {{ form.due_date }}
+        {% if form.due_date.help_text %}
+          <small class="text-muted d-block">{{ form.due_date.help_text }}</small>
+        {% endif %}
+        {% if form.due_date.errors %}
+          <div class="text-danger small">{{ form.due_date.errors|join:", " }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Completed - Checkbox -->
+    <div class="mb-4">
+        <div class="form-check">
+            {{ form.completed }}
+            {{ form.completed.label_tag }}
+        </div>
+        {% if form.completed.errors %}
+          <div class="text-danger small">{{ form.completed.errors|join:", " }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-success w-100 py-2">
+        {% if form.instance.pk %}Update{% else %}Create{% endif %}
+    </button>
+</form>
+
+<style>
+    select, input[type="date"], textarea, input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+    .form-check input { margin-right: 6px; }
+</style>
+{% endblock %}
+
+
+

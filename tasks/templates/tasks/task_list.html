@@ -1,0 +1,72 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-list-check"></i> My Tasks</h2>
+    <a href="{% url 'task_create' %}" class="btn btn-success"><i class="bi bi-plus-circle"></i> Add Task</a>
+</div>
+
+{% if tasks %}
+<table class="table table-hover align-middle shadow-sm bg-white rounded">
+    <thead class="table-primary">
+        <tr>
+            <th>Title</th>
+            <th>Priority</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th style="width: 160px;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr {% if task.completed %}class="table-light text-muted"{% endif %}>
+            <td>
+                {% if task.completed %}
+                    <del>{{ task.title }}</del>
+                {% else %}
+                    {{ task.title }}
+                {% endif %}
+            </td>
+            <td>
+                {% if task.priority == 3 %}
+                    <span class="badge bg-danger">High</span>
+                {% elif task.priority == 2 %}
+                    <span class="badge bg-warning text-dark">Medium</span>
+                {% else %}
+                    <span class="badge bg-success">Low</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if task.due_date %}
+                    {% if not task.completed and task.due_date < today %}
+                        <span class="text-danger fw-bold">{{ task.due_date }}</span>
+                    {% else %}
+                        {{ task.due_date }}
+                    {% endif %}
+                {% else %}
+                    <span class="text-muted">No due date</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if task.completed %}
+                    ✅ Completed
+                {% else %}
+                    ⏳ In Progress
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'task_detail' task.pk %}" class="btn btn-sm btn-outline-info"><i class="bi bi-eye"></i></a>
+                <a href="{% url 'task_update' task.pk %}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                <a href="{% url 'task_delete' task.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <div class="alert alert-info shadow-sm">No tasks yet. <a href="{% url 'task_create' %}">Create one now!</a></div>
+{% endif %}
+{% endblock %}
+
+
+

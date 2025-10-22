@@ -1,0 +1,11 @@
+{% extends 'tasks/base.html' %}
+{% block content %}
+<div class="container text-center mt-5">
+    <h1 class="mb-4">Welcome to Task Manager</h1>
+    <p class="lead mb-5">Organize your tasks efficiently and stay productive!</p>
+    <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-3 shadow-sm">Login</a>
+    <a href="{% url 'register' %}" class="btn btn-success btn-lg shadow-sm">Register</a>
+</div>
+{% endblock %}
+
+
